@@ -23,23 +23,23 @@ def panda_time(locationlist, pricelist, bedroomlist, bathroomlist, regionlist): 
         print("Sorry could not output Excel document at this time. ")
 
 
-def main():  #
+def main():  # finds and stores home information from Trulia.com
     bedroomlist = []
     bathroomlist = []
     pricelist = []
     locationlist = []
     regionlist = []
 
-    headers = {
+    headers = {  # User-agent was needed for Trulia.com servers
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/72.0.3626.121 Safari/537.36'}
     url = get("https://www.trulia.com/for_rent/Puyallup,WA/4p_beds/", headers=headers)
 
     soup = BeautifulSoup(url.content, 'html.parser')
-    homecard = soup.findAll("div", attrs={
+    homecard = soup.findAll("div", attrs={  # locates the div holding all home listing cards
         "class": "Grid__CellBox-sc-5ig2n4-0 SearchResultsList__WideCell-sc-183kqex-2 jLNYlr"})
 
-    for x in homecard:
+    for x in homecard:  # for loop each inner div to locate specific information to be appended to separate lists
 
         try:
             price = x.find('div', attrs={'data-testid': 'property-price'})
@@ -59,7 +59,7 @@ def main():  #
     panda_time(locationlist, pricelist, bedroomlist, bathroomlist, regionlist)
 
 
-current = dt.datetime.now()
+current = dt.datetime.now()  # datetime used to name each appended Excel sheet to see daily trends
 
 if __name__ == "__main__":
     main()
